@@ -267,6 +267,7 @@ the gate derives each tool's `readOnlyHint` from its toolset tag.
 | `compliance` | read | yes | 4 | workload/host compliance, CIS bench reports, compliance profiles |
 | `events` | read | yes | 5 | threats, violations, incidents, audits, system events, alerts |
 | `policy_read` | read | yes | 18 | network rules, process/file profiles, DLP sensors and groups, WAF sensors, response rules and options, admission state and rules, admission rule assessment |
+| `federation_read` | read | no | 2 | federation status and selected member reads |
 | `iam_read` | read | yes | 4 | users, roles, auth servers, API keys (metadata only) |
 | `policy_write` | write | **no** | 23 | create/update/delete groups, network rules (batch and single), process and file-monitor profiles, WAF and DLP sensors and group bindings, response rules, service creation |
 | `admission` | write | **no** | 5 | admission control state and rules, bulk rule deletion |
@@ -590,3 +591,4 @@ specification in `spec/SPEC.md`; `make verify` is the definition of done.
 Security event results include `cluster_name` and `cluster_id` when supplied by the controller.
 Host listings include the detected scan base OS and scan result when available.
 `nv_get_system_config` reads selected policy settings for local or federated scope without exposing webhook, authentication, proxy or repository configuration.
+Optional `federation_read` toolset: `nv_get_federation_status` and `nv_query_federation_member` provide read-only federation access. The master proxy requires fedAdmin, fedReader or equivalent federation read permission.
