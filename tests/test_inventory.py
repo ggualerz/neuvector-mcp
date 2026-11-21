@@ -238,6 +238,11 @@ async def test_list_groups_projects_and_pages(client, nv_mock: respx.MockRouter)
     assert first.member_count == 2
     assert first.policy_rule_count == 3
     assert first.response_rule_count == 1
+    assert first.profile_mode == "Monitor"
+    assert first.cfg_type == "learned"
+    second = result.data.groups[1]
+    assert second.profile_mode == "Discover"
+    assert second.cfg_type == "ground"
 
 
 async def test_list_groups_builds_query(client, nv_mock: respx.MockRouter) -> None:
@@ -508,3 +513,13 @@ async def test_system_config_scope_and_safe_projection(client, nv_mock):
     fed = await client.call_tool("nv_get_system_config", {"scope": "fed"})
     assert route.calls.last.request.url.params["scope"] == "fed"
     assert fed.structured_content == {}
+
+
+async def test_list_groups_defaults_missing_profile_mode_and_cfg_type(
+    client, nv_mock: respx.MockRouter
+) -> None:
+    nv_mock.get("/v1/group").respond(200, json={"groups": [{"name": "containers"}]})
+    result = await client.call_tool("nv_list_groups", {})
+    group = result.data.groups[0]
+    assert group.profile_mode == ""
+    assert group.cfg_type == ""
