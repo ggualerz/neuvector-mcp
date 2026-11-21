@@ -262,7 +262,7 @@ the gate derives each tool's `readOnlyHint` from its toolset tag.
 
 | Toolset | Kind | On by default | Tools | Contents |
 |---|---|---|---|---|
-| `inventory` | read | yes | 11 | workloads, hosts, groups, services, enforcers, namespaces, network conversations |
+| `inventory` | read | yes | 12 | workloads, hosts, groups, services, enforcers, namespaces, network conversations |
 | `vulnerability` | read | yes | 10 | image/workload/host scan reports, registries, scanners, vulnerability profiles, sigstore roots and verifiers |
 | `compliance` | read | yes | 4 | workload/host compliance, CIS bench reports, compliance profiles |
 | `events` | read | yes | 5 | threats, violations, incidents, audits, system events, alerts |
@@ -589,3 +589,4 @@ specification in `spec/SPEC.md`; `make verify` is the definition of done.
 
 Security event results include `cluster_name` and `cluster_id` when supplied by the controller.
 Host listings include the detected scan base OS and scan result when available.
+`nv_get_system_config` reads selected policy settings for local or federated scope without exposing webhook, authentication, proxy or repository configuration.

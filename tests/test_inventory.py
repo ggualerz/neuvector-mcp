@@ -478,3 +478,33 @@ async def test_host_scan_details_include_base_os_and_result(client, nv_mock):
     assert result.data.hosts[0].scan_result == "unsupported OS"
     assert result.data.hosts[1].base_os == ""
     assert result.data.hosts[1].scan_result == ""
+
+
+async def test_system_config_scope_and_safe_projection(client, nv_mock):
+    route = nv_mock.get("/v2/system/config").respond(
+        200,
+        json={
+            "config": {
+                "new_svc": {
+                    "new_service_policy_mode": "Monitor",
+                    "new_service_profile_mode": "Discover",
+                    "password": "hidden",
+                },
+                "net_svc": {"strict_group_mode": True, "net_service_status": False},
+                "mode_auto": {"mode_auto_d2m": False, "mode_auto_m2p": True},
+                "webhooks": [{"url": "hidden", "headers": {"Authorization": "hidden"}}],
+                "proxy": {"password": "hidden"},
+                "auth": {"secret": "hidden"},
+            },
+            "fed_config": {"webhooks": [{"url": "hidden"}]},
+        },
+    )
+    local = await client.call_tool("nv_get_system_config", {"scope": "local"})
+    assert route.calls.last.request.url.params["scope"] == "local"
+    assert local.data["new_svc"]["new_service_profile_mode"] == "Discover"
+    assert local.data["net_svc"]["strict_group_mode"] is True
+    assert local.data["mode_auto"]["mode_auto_m2p"] is True
+    assert "hidden" not in str(local.data)
+    fed = await client.call_tool("nv_get_system_config", {"scope": "fed"})
+    assert route.calls.last.request.url.params["scope"] == "fed"
+    assert fed.structured_content == {}
