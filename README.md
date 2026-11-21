@@ -588,3 +588,4 @@ specification in `spec/SPEC.md`; `make verify` is the definition of done.
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdarthzen%2Fneuvector-mcp.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdarthzen%2Fneuvector-mcp?ref=badge_large)
 
 Security event results include `cluster_name` and `cluster_id` when supplied by the controller.
+Host listings include the detected scan base OS and scan result when available.

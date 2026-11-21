@@ -641,3 +641,4 @@ A phase is complete when its gate passes **and** the tool count in
 | `reference/` | The working, tested core to copy in Phase 0 |
 
 Security event results include `cluster_name` and `cluster_id` when supplied by the controller.
+Host listings include the detected scan base OS and scan result when available.
